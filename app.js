@@ -311,21 +311,53 @@ document.addEventListener("DOMContentLoaded", () => {
     // Toggle sandbox play vs guided slide deck
     function toggleSandboxMode(forcePlay = null) {
         const nextState = forcePlay !== null ? forcePlay : !STATE.guidedMode;
+        const mainDeck = document.getElementById("main-deck");
+        const tabSlidesBtn = document.getElementById("tab-slides-btn");
+        const tabSimulatorBtn = document.getElementById("tab-simulator-btn");
+
         if (nextState) {
             STATE.guidedMode = false;
             DOM.guidedBadge.classList.remove("active");
             DOM.sandboxBadge.classList.add("active");
             DOM.toggleSandboxBtn.classList.add("btn-active");
-            announceToScreenReader("Sandbox Play Mode Enabled. Simulator is now unlocked from slides.");
+            
+            // Focus layout full screen simulator
+            document.body.classList.add("sandbox-fullscreen");
+            if (mainDeck) {
+                mainDeck.classList.add("show-simulator");
+            }
+            if (tabSimulatorBtn && tabSlidesBtn) {
+                tabSimulatorBtn.classList.add("active");
+                tabSlidesBtn.classList.remove("active");
+            }
+            
+            announceToScreenReader("Sandbox Play Mode Enabled. Simulator is now unlocked and showing fullscreen.");
         } else {
             STATE.guidedMode = true;
             DOM.guidedBadge.classList.add("active");
             DOM.sandboxBadge.classList.remove("active");
             DOM.toggleSandboxBtn.classList.remove("btn-active");
+            
+            // Revert layout focus
+            document.body.classList.remove("sandbox-fullscreen");
+            if (mainDeck) {
+                mainDeck.classList.remove("show-simulator");
+            }
+            if (tabSlidesBtn && tabSimulatorBtn) {
+                tabSlidesBtn.classList.add("active");
+                tabSimulatorBtn.classList.remove("active");
+            }
+            
             announceToScreenReader("Guided Mode Activated. Simulator is synchronized with slide view.");
             updatePresentationUI();
         }
         updateSpecsViewData();
+        
+        // Update persistent header exit play overlay
+        const exitBtn = document.getElementById("exit-sandbox-btn");
+        if (exitBtn) {
+            exitBtn.style.display = nextState ? "flex" : "none";
+        }
     }
 
     // Event Bindings for slides
@@ -334,6 +366,16 @@ document.addEventListener("DOMContentLoaded", () => {
     DOM.playPresentationBtn.addEventListener("click", toggleAutoPlay);
     DOM.toggleFullscreenBtn.addEventListener("click", toggleFullscreen);
     DOM.toggleSandboxBtn.addEventListener("click", () => toggleSandboxMode());
+    
+    const exitSandboxBtn = document.getElementById("exit-sandbox-btn");
+    if (exitSandboxBtn) {
+        exitSandboxBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            initAudio();
+            SOUNDS.pop();
+            toggleSandboxMode(false);
+        });
+    }
 
     // ==========================================================================
     // 5. SMARTPHONE SIMULATOR VIEW CONTROLLER
