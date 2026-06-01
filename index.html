@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Pour Decisions by Amabile di Rosa - A premium interactive Snapchat AR Lens Pitch Deck and live simulator. Experience retail-to-digital Marker-based bottle scanning, physics-based bottle spinning, cards drawing, and real-time jury evaluation.">
+    <meta name="author" content="Amabile di Rosa">
+    <title>Pour Decisions - Snapchat AR Pitch Deck & Live Simulator</title>
+    <!-- Preconnect for fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800&family=Comfortaa:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Custom styling -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Accessibility Announcement Region -->
+    <div id="sr-announcement" class="sr-only" aria-live="polite"></div>
+
+    <!-- Main Deck Grid Container -->
+    <main class="deck-grid" id="main-deck">
+        
+        <!-- LEFT PANEL: Slide Presentation -->
+        <section class="presentation-panel" aria-label="Pitch Deck Slides" id="presentation-panel">
+            <header class="deck-header">
+                <div class="logo-area">
+                    <span class="brand-badge">ADR</span>
+                    <span class="brand-text">AMABILE DI ROSA</span>
+                </div>
+                <div class="mode-indicator">
+                    <span class="mode-badge active" id="guided-badge">
+                        <i class="fa-solid fa-graduation-cap"></i> Guided Mode
+                    </span>
+                    <span class="mode-badge" id="sandbox-badge">
+                        <i class="fa-solid fa-gamepad"></i> Sandbox Mode
+                    </span>
+                </div>
+            </header>
+
+            <!-- Slides Container -->
+            <div class="slides-container" id="slides-viewport">
+                
+                <!-- SLIDE 0: TITLE -->
+                <article class="slide active-slide" id="slide-0" data-scene="intro">
+                    <div class="slide-content centered-content">
+                        <span class="slide-tag">Experience Concept</span>
+                        <h1 class="slide-main-title">AMABILE DI ROSA</h1>
+                        <p class="subtitle">POUR DECISIONS • FLIRT EDITION</p>
+                        <div class="accent-line"></div>
+                        <p class="slide-desc">An Interactive Snapchat AR Lens Experience Concept turning premium sweet wine into the ultimate social icebreaker.</p>
+                        <div class="tutorial-tip">
+                            <span class="key-cap"><i class="fa-solid fa-arrow-right"></i></span>
+                            <span>Use arrows or the navigation bar below to explore the deck. Watch the smartphone simulator on the right react to each slide!</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- SLIDE 1: CORE VISION -->
+                <article class="slide" id="slide-1" data-scene="scan">
+                    <div class="slide-content">
+                        <h2 class="slide-title">The Core Vision</h2>
+                        <div class="intro-box">
+                            <p class="vision-quote">
+                                "An immersive retail-to-digital gateway that turns a bottle of Amabile di Rosa sweet wine into a vibrant party companion through Snapchat marker tracking."
+                            </p>
+                        </div>
+                        <div class="vision-pillars">
+                            <div class="pillar-card">
+                                <div class="pillar-icon"><i class="fa-solid fa-qrcode"></i></div>
+                                <h4>Instant Engagement</h4>
+                                <p>Customers transition from a physical bottle in-store or at a table directly into the digital game lobby.</p>
+                            </div>
+                            <div class="pillar-card">
+                                <div class="pillar-icon"><i class="fa-solid fa-glass-cheers"></i></div>
+                                <h4>Social Gamification</h4>
+                                <p>Drives peer-to-peer laughter and sharing, framing Amabile di Rosa as the central catalyst of the night.</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- SLIDE 2: SCAN & UNLOCK -->
+                <article class="slide" id="slide-2" data-scene="scan">
+                    <div class="slide-content">
+                        <h2 class="slide-title">Phase 1: Scan & Unlock</h2>
+                        <div class="slide-body two-column">
+                            <div class="slide-text">
+                                <h3 class="section-subtitle">Marker-Based Gating</h3>
+                                <p>The AR lens gameplay loop triggers immediately upon camera detection of either:</p>
+                                <ul class="bullet-list">
+                                    <li>
+                                        <i class="fa-solid fa-wine-bottle"></i>
+                                        <div>
+                                            <strong>Physical Amabile di Rosa Wine Bottle</strong>
+                                            <span>Image target recognition mapped to the elegant bottle neck or front label contours.</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <i class="fa-solid fa-bookmark"></i>
+                                        <div>
+                                            <strong>Distinctive Brand Logo Print Asset</strong>
+                                            <span>High-contrast logo marker printed on coasters, retail stands, or digital screens.</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="commercial-note">
+                                    <i class="fa-solid fa-lightbulb"></i>
+                                    <p>Drives active product interaction directly at point of sale, retail shelves, and dinner tables.</p>
+                                </div>
+                            </div>
+                            <div class="slide-mockup-ref">
+                                <div class="mockup-indicator">
+                                    <span class="file-name">Snap Game ADR-_Invite Page.jpg</span>
+                                    <span class="mockup-caption">Visualizing the scanner's circular targeting reticle locking onto the bottle label. Try scanning inside the simulator!</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- SLIDE 3: SETUP LOBBY -->
+                <article class="slide" id="slide-3" data-scene="lobby">
+                    <div class="slide-content">
+                        <h2 class="slide-title">Phase 2: Game Setup Lobby</h2>
+                        <div class="slide-body two-column">
+                            <div class="slide-text">
+                                <h3 class="section-subtitle">Onboarding the Squad</h3>
+                                <p>Once unlocked, the host accesses a highly stylized interface to build their local session quickly.</p>
+                                <ul class="bullet-list">
+                                    <li>
+                                        <i class="fa-solid fa-users"></i>
+                                        <div>
+                                            <strong>2 to 4 Players Max</strong>
+                                            <span>Specifically optimized for compact, high-engagement social groups around a table.</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <i class="fa-solid fa-user-check"></i>
+                                        <div>
+                                            <strong>Clean, Fluid Fields</strong>
+                                            <span>Minimalist input fields and color cards matching the brand design system.</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="simulator-call">
+                                    <p><i class="fa-solid fa-arrow-pointer"></i> <strong>Interactive Demo:</strong> Type player names in the simulator to see them join the lobby list!</p>
+                                </div>
+                            </div>
+                            <div class="slide-mockup-ref">
+                                <div class="mockup-indicator">
+                                    <span class="file-name">Snap Game ADR-_Players .jpg</span>
+                                    <span class="mockup-caption">Onboarding interface showcasing modular player cards and warm avatar selectors.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- SLIDE 4: TAP TO SPIN -->
+                <article class="slide" id="slide-4" data-scene="spinner">
+                    <div class="slide-content">
+                        <h2 class="slide-title">Phase 3: Tap to Spin</h2>
+                        <div class="slide-body two-column">
+                            <div class="slide-text">
+                                <h3 class="section-subtitle">The Deciding Factor</h3>
+                                <p>The host triggers the main game loop screen. An isolated product bottle stands centered among multi-directional player markers.</p>
+                                <ul class="bullet-list">
+                                    <li>
+                                        <i class="fa-solid fa-rotate"></i>
+                                        <div>
+                                            <strong>Interactive Tap-to-Spin</strong>
+                                            <span>Physics-based angular momentum deceleration determines the active turn target.</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <i class="fa-solid fa-crosshairs"></i>
+                                        <div>
+                                            <strong>Target Selection</strong>
+                                            <span>Whomever the bottle neck points to must face the deck!</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="simulator-call">
+                                    <p><i class="fa-solid fa-arrow-rotate-right"></i> <strong>Interactive Demo:</strong> Tap the bottle in the simulated phone to spin it with real-time deceleration physics!</p>
+                                </div>
+                            </div>
+                            <div class="slide-mockup-ref">
+                                <div class="mockup-indicator">
+                                    <span class="file-name">Snap Game ADR-_Spinner.jpg</span>
+                                    <span class="mockup-caption">Visualizes the bottle rotating centered inside player sectors with custom particle arcs.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- SLIDE 5: PROMPTS & CATEGORIES -->
+                <article class="slide" id="slide-5" data-scene="cards">
+                    <div class="slide-content">
+                        <h2 class="slide-title">Phase 4: Prompts & Categories</h2>
+                        <div class="slide-body">
+                            <p class="slide-intro-text">The Lens engine queries a prompt matrix separated into three context-appropriate card categories designed to break the ice:</p>
+                            <div class="tiled-content">
+                                <div class="tile tile-dare">
+                                    <div class="tile-header">
+                                        <div class="tile-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                                        <h3>DARE</h3>
+                                    </div>
+                                    <p>Action-oriented physical prompts to break comfort boundaries and build close team chemistry.</p>
+                                    <span class="category-meta">Comfortaa Blue Style</span>
+                                </div>
+                                <div class="tile tile-spill">
+                                    <div class="tile-header">
+                                        <div class="tile-icon"><i class="fa-solid fa-comment-dots"></i></div>
+                                        <h3>SPILL</h3>
+                                    </div>
+                                    <p>Confession-based truth prompts unlocking deep, humorous secrets and conversational depth.</p>
+                                    <span class="category-meta">Comfortaa Green Style</span>
+                                </div>
+                                <div class="tile tile-sip">
+                                    <div class="tile-header">
+                                        <div class="tile-icon"><i class="fa-solid fa-glass-cheers"></i></div>
+                                        <h3>SIP</h3>
+                                    </div>
+                                    <p>Immediate, light-hearted group dynamic rules and playful penalties targeting all participants.</p>
+                                    <span class="category-meta">Comfortaa Red Style</span>
+                                </div>
+                            </div>
+                            <div class="simulator-call card-footer-call">
+                                <p><i class="fa-solid fa-sparkles"></i> <strong>Interactive Demo:</strong> Tap any category card on the simulator to draw a prompt and see it flip in 3D!</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- SLIDE 6: PEER VERDICT -->
+                <article class="slide" id="slide-6" data-scene="verdict">
+                    <div class="slide-content">
+                        <h2 class="slide-title">Phase 5: The Peer Verdict</h2>
+                        <div class="slide-body two-column">
+                            <div class="slide-text">
+                                <h3 class="section-subtitle">Social Evaluation System</h3>
+                                <p>To eliminate passive observation, all non-active session members form an immediate interactive jury panel:</p>
+                                <ul class="bullet-list">
+                                    <li>
+                                        <i class="fa-solid fa-circle-check" style="color: var(--brand-green);"></i>
+                                        <div>
+                                            <strong>Legit (Green Option)</strong>
+                                            <span>Validates honesty, successful dare execution, or courageous disclosure.</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <i class="fa-solid fa-gavel" style="color: var(--brand-red);"></i>
+                                        <div>
+                                            <strong>Cap !!! (Red Option)</strong>
+                                            <span>Punishes avoidance, fake confessions, or clear task dodging.</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="commercial-note">
+                                    <i class="fa-solid fa-people-group"></i>
+                                    <p>Forces constant active participation, turning the AR lens from a solo trick into a shared group theater.</p>
+                                </div>
+                            </div>
+                            <div class="slide-mockup-ref">
+                                <div class="mockup-indicator">
+                                    <span class="file-name">Snap Game ADR-_User-Profile.jpg</span>
+                                    <span class="mockup-caption">Jury feedback sliders showing real-time truth indices and total Legit/Cap ratios for each player.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- SLIDE 7: STAKES & REWARDS -->
+                <article class="slide" id="slide-7" data-scene="ending">
+                    <div class="slide-content">
+                        <h2 class="slide-title">Phase 6: Stakes & Rewards</h2>
+                        <div class="slide-body two-column">
+                            <div class="slide-text">
+                                <h3 class="section-subtitle">Real-World Commerce Integration</h3>
+                                <p>The Lens engine calculates absolute totals at session close, establishing distinct real-world stakes that link back to the brand:</p>
+                                <ul class="bullet-list">
+                                    <li>
+                                        <i class="fa-solid fa-trophy" style="color: gold;"></i>
+                                        <div>
+                                            <strong>The Winner</strong>
+                                            <span>The player who holds the highest collective "Legit" metric and successfully completed prompts.</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <i class="fa-solid fa-skull-crossbones"></i>
+                                        <div>
+                                            <strong>The Loser (Sponsor Gateway)</strong>
+                                            <span>Officially branded to <em>"Owe the Winner a Bottle of Amabile Sweet Wine."</em></span>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="commercial-note" style="border-left-color: var(--brand-blue);">
+                                    <i class="fa-solid fa-cart-shopping" style="color: var(--brand-blue);"></i>
+                                    <p>An integrated call-to-action button links straight to retail partners or fast delivery apps to fulfill the bottle pledge!</p>
+                                </div>
+                            </div>
+                            <div class="slide-mockup-ref">
+                                <div class="mockup-indicator">
+                                    <span class="file-name">Snap ADR-_Winner.jpg & _Remaining Loser.jpg</span>
+                                    <span class="mockup-caption">Dynamic celebration overlay with immediate order links and quick sharing filters for Snapchat.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- SLIDE 8: TECHNICAL ARCHITECTURE -->
+                <article class="slide" id="slide-8" data-scene="specs">
+                    <div class="slide-content">
+                        <h2 class="slide-title">Technical Implementation</h2>
+                        <div class="slide-body">
+                            <h3 class="section-subtitle" style="text-align: center; margin-bottom: 25px;">Lens Studio Structural Setup Roadmap</h3>
+                            <div class="tech-grid">
+                                <div class="tech-card">
+                                    <div class="tech-icon"><i class="fa-solid fa-expand"></i></div>
+                                    <h4>Tracking Modules</h4>
+                                    <p>Marker tracking pipeline set to profile target bottle topology / high-contrast graphic logo contours. Dynamic camera anchoring keeps 3D overlays locked even in moving environments.</p>
+                                    <span class="tech-badge">Lens Studio Marker Tracker</span>
+                                </div>
+                                <div class="tech-card">
+                                    <div class="tech-icon"><i class="fa-solid fa-cubes"></i></div>
+                                    <h4>State Architecture</h4>
+                                    <p>JavaScript array logic structuring randomized card retrieval, profile balance tracking, and view state swaps. Keeps network usage local and execution lag at near zero.</p>
+                                    <span class="tech-badge">Lens Studio Javascript ES6</span>
+                                </div>
+                                <div class="tech-card">
+                                    <div class="tech-icon"><i class="fa-solid fa-wave-square"></i></div>
+                                    <h4>AR Physics Engine</h4>
+                                    <p>Rotational physics model using angular drag coefficients to simulate high-fidelity bottle spins, ensuring results feel satisfyingly analog and unscripted.</p>
+                                    <span class="tech-badge">Physics & Transform Math</span>
+                                </div>
+                                <div class="tech-card">
+                                    <div class="tech-icon"><i class="fa-solid fa-volume-high"></i></div>
+                                    <h4>Interactive Audio</h4>
+                                    <p>Built-in sound controller with dynamic pitch shifts mapping bottle spin velocity. Real-time synthesized feedback enhances overall immersive engagement.</p>
+                                    <span class="tech-badge">Audio Component System</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+
+            <!-- Slideshow Controls Footer -->
+            <footer class="deck-footer">
+                <nav class="navigation-controls" aria-label="Deck Controls">
+                    <button class="nav-btn prev-btn" id="prev-slide-btn" title="Previous Slide (Left Arrow)">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+                    
+                    <div class="progress-bar-container">
+                        <span class="slide-counter-text" id="slide-counter">1 / 9</span>
+                        <div class="progress-track">
+                            <div class="progress-fill" id="slide-progress" style="width: 11.11%;"></div>
+                        </div>
+                    </div>
+
+                    <button class="nav-btn next-btn" id="next-slide-btn" title="Next Slide (Right Arrow/Spacebar)">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </nav>
+                
+                <div class="extra-controls">
+                    <button class="control-action-btn" id="play-presentation-btn" title="Auto-advance slides">
+                        <i class="fa-solid fa-play"></i> Auto-Play
+                    </button>
+                    <button class="control-action-btn" id="toggle-sandbox-btn" title="Toggle sandbox play mode">
+                        <i class="fa-solid fa-gamepad"></i> Sandbox Play
+                    </button>
+                    <button class="control-action-btn" id="toggle-fullscreen-btn" title="Toggle Fullscreen">
+                        <i class="fa-solid fa-expand"></i> Fullscreen
+                    </button>
+                </div>
+            </footer>
+        </section>
+
+        <!-- RIGHT PANEL: Smartphone Simulator -->
+        <section class="simulator-panel" aria-label="Live Snapchat AR Simulator" id="simulator-panel">
+            <div class="phone-frame">
+                <!-- Phone Bezel Details -->
+                <div class="phone-screen-glare"></div>
+                <div class="phone-earpiece"></div>
+                <div class="phone-camera-lens"></div>
+                
+                <!-- Phone Content Area -->
+                <div class="phone-screen" id="phone-screen">
+                    
+                    <!-- Snapchat Overlay UI (Persistent) -->
+                    <div class="snap-header">
+                        <div class="snap-user-info">
+                            <div class="snap-avatar"><i class="fa-solid fa-ghost"></i></div>
+                            <div class="snap-meta">
+                                <span class="snap-story-title">Pour Decisions</span>
+                                <span class="snap-story-sub">Amabile Sweet Wine</span>
+                            </div>
+                        </div>
+                        <div class="snap-utility">
+                            <span class="snap-fps">60 FPS</span>
+                            <button class="snap-close-btn" id="simulator-reset-btn" title="Restart Simulator">
+                                <i class="fa-solid fa-arrows-rotate"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- SIMULATOR VIEWPORTS (DYNAMICALLY SHOWN BY STATE) -->
+                    <div class="simulator-view-container" id="view-container">
+
+                        <!-- SCENE 0: INTRO / TITLE STATE -->
+                        <div class="sim-view active-view" id="view-intro" data-view="intro">
+                            <div class="brand-background-pattern"></div>
+                            <div class="intro-welcome-card">
+                                <div class="wine-sparkle-logo">
+                                    <svg viewBox="0 0 100 100" class="wine-bottle-svg" width="60" height="120">
+                                        <path d="M40,5 C40,5 45,5 45,8 C45,11 43,15 43,20 C43,25 35,32 35,45 L35,80 C35,85 40,90 50,90 C60,90 65,85 65,80 L65,45 C65,32 57,25 57,20 C57,15 55,11 55,8 C55,5 60,5 60,5" fill="#E85835"/>
+                                        <rect x="42" y="4" width="16" height="4" rx="2" fill="#EAE5D9" />
+                                        <ellipse cx="50" cy="65" rx="10" ry="15" fill="#FFFDF6" opacity="0.8"/>
+                                    </svg>
+                                    <div class="glow-sparkle sp-1"><i class="fa-solid fa-star"></i></div>
+                                    <div class="glow-sparkle sp-2"><i class="fa-solid fa-heart"></i></div>
+                                    <div class="glow-sparkle sp-3"><i class="fa-solid fa-star"></i></div>
+                                </div>
+                                <h3 class="sim-brand-title">POUR DECISIONS</h3>
+                                <p class="sim-edition-tag">FLIRT EDITION</p>
+                                
+                                <div class="session-card">
+                                    <p class="sessions-indicator"><i class="fa-solid fa-signal"></i> Marker Gated Experience</p>
+                                    <button class="primary-sim-btn" id="start-scanning-btn">
+                                        <span>UNlOCK LENS</span>
+                                        <i class="fa-solid fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SCENE 1: SCANNING FEED -->
+                        <div class="sim-view" id="view-scan" data-view="scan">
+                            <!-- Simulated Camera Feed -->
+                            <div class="camera-feed-simulator">
+                                <video id="webcam-stream" class="webcam-feed" playsinline muted autoplay></video>
+                                <div class="animated-camera-background" id="dummy-camera-feed">
+                                    <div class="bokeh-orb bo-1"></div>
+                                    <div class="bokeh-orb bo-2"></div>
+                                    <div class="bokeh-orb bo-3"></div>
+                                </div>
+                                
+                                <div class="scanner-ui-overlay">
+                                    <div class="scan-frame-corners"></div>
+                                    <!-- Scan target overlay -->
+                                    <div class="target-marker-box" id="target-scanner-reticle">
+                                        <div class="marker-reticle-ring"></div>
+                                        <div class="target-brand-label">
+                                            <div class="label-logo-svg">
+                                                <i class="fa-solid fa-wine-bottle"></i>
+                                            </div>
+                                            <span>ALIGN BOTTLE OR BRAND LOGO</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Scanning Prompt -->
+                                    <div class="scan-status-panel">
+                                        <p class="scan-status-text" id="scan-hint-text">Point camera at the Amabile di Rosa bottle</p>
+                                        <div class="scanner-progress-bar">
+                                            <div class="scanner-progress-fill" id="scan-progress-bar" style="width: 0%;"></div>
+                                        </div>
+                                        <!-- Test simulation unlock trigger -->
+                                        <button class="manual-scan-trigger" id="mock-scan-success-btn">
+                                            <i class="fa-solid fa-bolt"></i> Simulate Label Scan Match
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SCENE 2: SETUP LOBBY -->
+                        <div class="sim-view" id="view-lobby" data-view="lobby">
+                            <div class="lobby-screen-content">
+                                <div class="view-header">
+                                    <span class="step-num">02</span>
+                                    <h4>SETUP PLAYERS</h4>
+                                    <p class="step-desc">Onboard the crew (2 - 4 players max)</p>
+                                </div>
+
+                                <div class="lobby-interactive-area">
+                                    <!-- Player Add Panel -->
+                                    <form class="player-input-form" id="player-onboard-form" onsubmit="event.preventDefault();">
+                                        <div class="input-wrapper">
+                                            <input type="text" id="player-name-input" placeholder="Enter player name..." maxlength="12" autocomplete="off" aria-label="Player Name">
+                                            <button type="submit" class="add-player-btn" id="add-player-submit" aria-label="Add Player">
+                                                <i class="fa-solid fa-user-plus"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                    <!-- Added Players List -->
+                                    <div class="players-lobby-list" id="lobby-players-list">
+                                        <!-- Dynamically generated player rows -->
+                                    </div>
+                                </div>
+
+                                <div class="lobby-footer">
+                                    <button class="primary-sim-btn locked-btn" id="lobby-start-game-btn" disabled>
+                                        <span>START THE GAME (0/2)</span>
+                                        <i class="fa-solid fa-play"></i>
+                                    </button>
+                                    <p class="players-limit-hint">Minimum 2, Maximum 4 players required</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SCENE 3: SPINNER -->
+                        <div class="sim-view" id="view-spinner" data-view="spinner">
+                            <div class="spinner-screen-content">
+                                <div class="spinner-header">
+                                    <span class="active-turn-title" id="spinner-status-title">TAP BOTTLE TO SPIN</span>
+                                    <div class="active-players-mini-bar" id="spinner-players-bar">
+                                        <!-- Mini profile avatars of active players -->
+                                    </div>
+                                </div>
+
+                                <!-- The main interactive spinner zone -->
+                                <div class="spin-wheel-container">
+                                    <!-- Sector Markers Background -->
+                                    <div class="wheel-sectors" id="wheel-sectors-container">
+                                        <!-- Sector cards populated dynamically -->
+                                    </div>
+                                    
+                                    <!-- Rotational Bottle Element -->
+                                    <div class="interactive-spin-bottle" id="physics-bottle">
+                                        <div class="bottle-glow-effect"></div>
+                                        <svg viewBox="0 0 100 300" class="svg-bottle-model" width="80" height="240">
+                                            <!-- High-fidelity SVG of Amabile bottle -->
+                                            <defs>
+                                                <linearGradient id="bottle-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                    <stop offset="0%" stop-color="#7A180E" />
+                                                    <stop offset="35%" stop-color="#E85835" />
+                                                    <stop offset="70%" stop-color="#B2281A" />
+                                                    <stop offset="100%" stop-color="#540C05" />
+                                                </linearGradient>
+                                                <linearGradient id="foil-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                    <stop offset="0%" stop-color="#CA9E5A" />
+                                                    <stop offset="50%" stop-color="#FFF3C4" />
+                                                    <stop offset="100%" stop-color="#9C7235" />
+                                                </linearGradient>
+                                                <linearGradient id="label-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                    <stop offset="0%" stop-color="#FFFDF6" />
+                                                    <stop offset="100%" stop-color="#EAE5D9" />
+                                                </linearGradient>
+                                            </defs>
+                                            <!-- Bottle Body -->
+                                            <path d="M35,90 C35,60 42,45 42,15 L58,15 C58,45 65,60 65,90 L65,240 C65,260 60,280 50,280 C40,280 35,260 35,240 Z" fill="url(#bottle-grad)"/>
+                                            <!-- Foil Neck -->
+                                            <path d="M42,15 L58,15 L58,40 L42,40 Z" fill="url(#foil-grad)" />
+                                            <rect x="41" y="10" width="18" height="5" rx="1.5" fill="url(#foil-grad)" />
+                                            <!-- Brand Label -->
+                                            <rect x="37" y="110" width="26" height="80" rx="3" fill="url(#label-grad)" />
+                                            <!-- Small Label Details -->
+                                            <path d="M42,120 L58,120" stroke="#E85835" stroke-width="1.5" />
+                                            <circle cx="50" cy="135" r="4" fill="#E85835" />
+                                            <path d="M43,150 L57,150" stroke="#1E1E1E" stroke-width="1" />
+                                            <path d="M45,160 L55,160" stroke="#1E1E1E" stroke-width="1" />
+                                            <path d="M40,175 L60,175" stroke="#E85835" stroke-width="1" />
+                                        </svg>
+                                        <!-- Pointer Indicator on the neck -->
+                                        <div class="bottle-pointer-nozzle"></div>
+                                    </div>
+                                    
+                                    <!-- Interactive Center Tap -->
+                                    <button class="spin-center-hub" id="trigger-spin-btn" aria-label="Spin bottle">
+                                        <span>SPIN</span>
+                                    </button>
+                                </div>
+
+                                <div class="spinner-footer">
+                                    <div class="turn-indicator-avatar" id="turn-active-avatar">
+                                        <i class="fa-solid fa-wine-glass-empty"></i>
+                                    </div>
+                                    <div class="turn-desc">
+                                        <p class="turn-meta">ACTIVE PICK</p>
+                                        <h5 class="turn-name-holder" id="selected-target-player">No Player Picked</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SCENE 4: PROMPTS & CATEGORIES -->
+                        <div class="sim-view" id="view-cards" data-view="cards">
+                            <div class="cards-screen-content">
+                                <div class="cards-view-header">
+                                    <div class="target-profile-header">
+                                        <div class="sim-profile-bubble" id="card-active-avatar">P1</div>
+                                        <div>
+                                            <h5 id="card-active-name">Player Name</h5>
+                                            <p>Draw your challenge card!</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Card Pile/Draw Zone -->
+                                <div class="deck-draw-zone">
+                                    
+                                    <!-- 3D Perspective Card Container -->
+                                    <div class="card-3d-wrapper" id="prompt-card-wrapper">
+                                        <!-- CARD FRONT (Dynamic Content) -->
+                                        <div class="card-face card-front" id="active-drawn-card-front">
+                                            <div class="card-category-strip" id="card-strip-bg">
+                                                <i class="fa-solid fa-star" id="card-strip-icon"></i>
+                                                <span id="card-strip-label">DARE</span>
+                                            </div>
+                                            <div class="card-body-content">
+                                                <p class="card-prompt-text" id="drawn-prompt-content">Tap a deck below to query the card deck and draw your prompt.</p>
+                                            </div>
+                                            <div class="card-branding-tag">
+                                                <span>POUR DECISIONS</span>
+                                                <i class="fa-solid fa-circle"></i>
+                                                <span>AMABILE</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- CARD BACK (The Default Pile Cover) -->
+                                        <div class="card-face card-back" id="active-drawn-card-back">
+                                            <div class="card-back-pattern"></div>
+                                            <div class="card-back-branding">
+                                                <div class="logo-circle">
+                                                    <i class="fa-solid fa-wine-glass"></i>
+                                                </div>
+                                                <h4>POUR DECISIONS</h4>
+                                                <span>Draw a card</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Dynamic Deck Category Selector Buttons -->
+                                <div class="categories-selection-footer">
+                                    <button class="cat-selector-btn dare-color" data-category="DARE">
+                                        <i class="fa-solid fa-hand-holding-heart"></i>
+                                        <span>DARE</span>
+                                    </button>
+                                    <button class="cat-selector-btn spill-color" data-category="SPILL">
+                                        <i class="fa-solid fa-comment-dots"></i>
+                                        <span>SPILL</span>
+                                    </button>
+                                    <button class="cat-selector-btn sip-color" data-category="SIP">
+                                        <i class="fa-solid fa-glass-cheers"></i>
+                                        <span>SIP</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SCENE 5: PEER VERDICT -->
+                        <div class="sim-view" id="view-verdict" data-view="verdict">
+                            <div class="verdict-screen-content">
+                                <div class="verdict-header">
+                                    <h4>PEER VERDICT</h4>
+                                    <p class="verdict-desc-meta">The Jury is deciding the truth value...</p>
+                                </div>
+
+                                <div class="verdict-prompt-summary">
+                                    <div class="verdict-player-summary-tag">
+                                        <div class="mini-bubble" id="verdict-player-avatar">P1</div>
+                                        <span id="verdict-player-name">Player Name</span>
+                                    </div>
+                                    <!-- Prompt Text Block -->
+                                    <div class="prompt-text-block">
+                                        <p id="verdict-active-prompt-display">Prompt details show here...</p>
+                                    </div>
+                                </div>
+
+                                <!-- Jury Voting Dashboard -->
+                                <div class="jury-control-panel">
+                                    <p class="jury-cta-label">Jury: Cast your vote!</p>
+                                    
+                                    <div class="verdict-actions-grid">
+                                        <button class="verdict-btn legit-btn" id="jury-legit-btn">
+                                            <div class="verdict-btn-ripple"></div>
+                                            <i class="fa-solid fa-circle-check"></i>
+                                            <span>LEGIT</span>
+                                            <small>TaskList Done</small>
+                                        </button>
+                                        <button class="verdict-btn cap-btn" id="jury-cap-btn">
+                                            <div class="verdict-btn-ripple"></div>
+                                            <i class="fa-solid fa-gavel"></i>
+                                            <span>CAP !!!</span>
+                                            <small>Penalty Sip</small>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="verdict-footer">
+                                    <div class="jury-score-metrics">
+                                        <div class="jury-metric-label">
+                                            <span>Current Verdict Bias</span>
+                                            <span id="jury-percentage">50% Legit</span>
+                                        </div>
+                                        <div class="jury-progress-track">
+                                            <div class="jury-progress-fill-legit" id="jury-bar-legit" style="width: 50%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SCENE 6: ENDING / CELEBRATION -->
+                        <div class="sim-view" id="view-ending" data-view="ending">
+                            <canvas class="confetti-canvas" id="ending-confetti-canvas"></canvas>
+                            <div class="ending-screen-content">
+                                <div class="ending-header">
+                                    <div class="trophy-sparkle">
+                                        <i class="fa-solid fa-trophy"></i>
+                                    </div>
+                                    <h4>SESSION CLOSE</h4>
+                                    <p>Pour Decisions Ledger</p>
+                                </div>
+
+                                <!-- Outcome Cards Side by Side -->
+                                <div class="ending-results-box">
+                                    <!-- Winner Card -->
+                                    <div class="outcome-card winner-card">
+                                        <div class="card-glow"></div>
+                                        <div class="crown-icon"><i class="fa-solid fa-crown"></i></div>
+                                        <span class="outcome-label">THE WINNER</span>
+                                        <div class="outcome-avatar" id="winner-avatar">W</div>
+                                        <h5 class="outcome-name" id="winner-name-text">Honorable</h5>
+                                        <p class="outcome-score" id="winner-score-text">100% Legit</p>
+                                    </div>
+
+                                    <!-- Loser Card -->
+                                    <div class="outcome-card loser-card">
+                                        <span class="outcome-label">THE LOSER</span>
+                                        <div class="outcome-avatar" id="loser-avatar">L</div>
+                                        <h5 class="outcome-name" id="loser-name-text">Cap Master</h5>
+                                        <p class="outcome-score" id="loser-score-text">0% Legit</p>
+                                        <span class="loser-penalty-desc">Owes a bottle of Amabile di Rosa</span>
+                                    </div>
+                                </div>
+
+                                <!-- Purchase Integration CTA -->
+                                <div class="commercial-cta-box">
+                                    <p class="cta-message">Loser: Settle the score!</p>
+                                    <button class="primary-sim-btn purchase-btn" id="sim-commerce-btn">
+                                        <i class="fa-solid fa-cart-shopping"></i>
+                                        <span>BUY WINNER A BOTTLE</span>
+                                    </button>
+                                </div>
+
+                                <div class="ending-restart-footer">
+                                    <button class="restart-game-btn" id="game-restart-final-btn">
+                                        <i class="fa-solid fa-rotate-left"></i> Start New Game
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SCENE 7: SPECS/SANDBOX STATE -->
+                        <div class="sim-view" id="view-specs" data-view="specs">
+                            <div class="specs-screen-content">
+                                <div class="view-header">
+                                    <span class="step-num">08</span>
+                                    <h4>SANDBOX STATUS</h4>
+                                    <p class="step-desc">Interactive Tech Spec Engine</p>
+                                </div>
+
+                                <div class="sandbox-stats-list">
+                                    <div class="spec-stat-item">
+                                        <span class="stat-lbl">Active Mode</span>
+                                        <span class="stat-val" id="spec-active-mode">Guided Presentation</span>
+                                    </div>
+                                    <div class="spec-stat-item">
+                                        <span class="stat-lbl">Active Players</span>
+                                        <span class="stat-val" id="spec-players-count">0 Players</span>
+                                    </div>
+                                    <div class="spec-stat-item">
+                                        <span class="stat-lbl">Total Spins</span>
+                                        <span class="stat-val" id="spec-spins-count">0 Spins</span>
+                                    </div>
+                                    <div class="spec-stat-item">
+                                        <span class="stat-lbl">Total Cards Drawn</span>
+                                        <span class="stat-val" id="spec-draws-count">0 Draws</span>
+                                    </div>
+                                    <div class="spec-stat-item">
+                                        <span class="stat-lbl">Audio Core</span>
+                                        <span class="stat-val text-green"><i class="fa-solid fa-check"></i> Web Audio Synced</span>
+                                    </div>
+                                </div>
+
+                                <div class="specs-action-bar">
+                                    <button class="primary-sim-btn" id="sandbox-play-now-btn">
+                                        <i class="fa-solid fa-gamepad"></i>
+                                        <span>PLAY LENS SANDBOX</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <!-- Script loaders -->
+    <script src="app.js"></script>
+</body>
+</html>
