@@ -1,17 +1,11 @@
 /* ==========================================================================
-   AMABILE DI ROSA - POUR DECISIONS: AR SIMULATOR & DECK CONTROLLER
+   AMABILE DI ROSA - POUR DECISIONS: AR SIMULATOR GAMEPLAY CONTROLLER
    ========================================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
     
-    // ==========================================================================
-    // 1. DATA & STATE MANAGEMENT
-    // ==========================================================================
-    
+    // Sandbox game state
     const STATE = {
-        currentSlide: 0,
-        totalSlides: 9,
-        guidedMode: true, // If true, simulator views auto-match slide index
         players: [],      // Array of: { id, name, color, avatar, legitVotes, totalVotes }
         activePlayerIndex: null,
         activeCategory: null,
@@ -20,12 +14,10 @@ document.addEventListener("DOMContentLoaded", () => {
         drawsCount: 0,
         isSpinning: false,
         isFlipped: false,
-        autoPlayTimer: null,
-        isAutoPlaying: false,
         audioContext: null
     };
 
-    // Color registry for players
+    // Color palette registry for players
     const PLAYER_COLORS = [
         { main: "var(--brand-red)", text: "#FFFFFF", rgb: "232, 88, 53" },
         { main: "var(--brand-blue)", text: "#FFFFFF", rgb: "74, 107, 130" },
@@ -33,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { main: "#D97706", text: "#FFFFFF", rgb: "217, 119, 6" } // Amber
     ];
 
-    // Prompts Database
+    // Card Prompt Database
     const PROMPTS_DATABASE = {
         DARE: [
             "Pour a drink using your non-dominant hand while lock-eye contact with the target player.",
@@ -65,15 +57,14 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // ==========================================================================
-    // 2. SYNTHESIZED WEB AUDIO CORE
+    // AUDIO SYNTHESIZER
     // ==========================================================================
-    
     function initAudio() {
         if (STATE.audioContext) return;
         try {
             STATE.audioContext = new (window.AudioContext || window.webkitAudioContext)();
         } catch (e) {
-            console.warn("Web Audio API is not supported in this browser.", e);
+            console.warn("Web Audio API is not supported.", e);
         }
     }
 
@@ -81,7 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
         initAudio();
         if (!STATE.audioContext) return;
         
-        // Resume if suspended (browser security policy)
         if (STATE.audioContext.state === 'suspended') {
             STATE.audioContext.resume();
         }
@@ -114,50 +104,33 @@ document.addEventListener("DOMContentLoaded", () => {
             setTimeout(() => synthSound(659.25, "sine", 0.2), 100); // E5
             setTimeout(() => synthSound(783.99, "sine", 0.4), 200); // G5
         },
-        cap: () => {
-            synthSound(180, "sawtooth", 0.3, 100);
-        },
+        cap: () => synthSound(180, "sawtooth", 0.3, 100),
         pop: () => synthSound(600, "sine", 0.08, 1200)
     };
 
     // ==========================================================================
-    // 3. DOM ELEMENT CACHE
+    // DOM CACHE
     // ==========================================================================
-    
     const DOM = {
-        // Deck Elements
-        slidesViewport: document.getElementById("slides-viewport"),
-        slideProgress: document.getElementById("slide-progress"),
-        slideCounter: document.getElementById("slide-counter"),
-        prevBtn: document.getElementById("prev-slide-btn"),
-        nextBtn: document.getElementById("next-slide-btn"),
-        playPresentationBtn: document.getElementById("play-presentation-btn"),
-        toggleSandboxBtn: document.getElementById("toggle-sandbox-btn"),
-        toggleFullscreenBtn: document.getElementById("toggle-fullscreen-btn"),
-        guidedBadge: document.getElementById("guided-badge"),
-        sandboxBadge: document.getElementById("sandbox-badge"),
-        srAnnouncement: document.getElementById("sr-announcement"),
-
-        // Phone Simulator Container Views
         views: document.querySelectorAll(".sim-view"),
-        viewContainer: document.getElementById("view-container"),
         resetBtn: document.getElementById("simulator-reset-btn"),
         webcamStream: document.getElementById("webcam-stream"),
         dummyCamera: document.getElementById("dummy-camera-feed"),
+        srAnnouncement: document.getElementById("sr-announcement"),
 
-        // Scan View Elements
+        // Scan View
         startScanningBtn: document.getElementById("start-scanning-btn"),
         mockScanSuccessBtn: document.getElementById("mock-scan-success-btn"),
         scanProgressBar: document.getElementById("scan-progress-bar"),
         scanHintText: document.getElementById("scan-hint-text"),
 
-        // Lobby View Elements
+        // Lobby View
         playerOnboardForm: document.getElementById("player-onboard-form"),
         playerNameInput: document.getElementById("player-name-input"),
         lobbyPlayersList: document.getElementById("lobby-players-list"),
         lobbyStartGameBtn: document.getElementById("lobby-start-game-btn"),
 
-        // Spinner View Elements
+        // Spinner View
         physicsBottle: document.getElementById("physics-bottle"),
         wheelSectorsContainer: document.getElementById("wheel-sectors-container"),
         spinnerPlayersBar: document.getElementById("spinner-players-bar"),
@@ -166,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
         triggerSpinBtn: document.getElementById("trigger-spin-btn"),
         spinnerStatusTitle: document.getElementById("spinner-status-title"),
 
-        // Cards View Elements
+        // Cards View
         promptCardWrapper: document.getElementById("prompt-card-wrapper"),
         cardActiveAvatar: document.getElementById("card-active-avatar"),
         cardActiveName: document.getElementById("card-active-name"),
@@ -176,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cardStripLabel: document.getElementById("card-strip-label"),
         categoryButtons: document.querySelectorAll(".cat-selector-btn"),
 
-        // Verdict View Elements
+        // Verdict View
         verdictPlayerAvatar: document.getElementById("verdict-player-avatar"),
         verdictPlayerName: document.getElementById("verdict-player-name"),
         verdictActivePromptDisplay: document.getElementById("verdict-active-prompt-display"),
@@ -185,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
         juryPercentage: document.getElementById("jury-percentage"),
         juryBarLegit: document.getElementById("jury-bar-legit"),
 
-        // Ending View Elements
+        // Ending View
         confettiCanvas: document.getElementById("ending-confetti-canvas"),
         winnerAvatar: document.getElementById("winner-avatar"),
         winnerNameText: document.getElementById("winner-name-text"),
@@ -194,193 +167,18 @@ document.addEventListener("DOMContentLoaded", () => {
         loserNameText: document.getElementById("loser-name-text"),
         loserScoreText: document.getElementById("loser-score-text"),
         gameRestartFinalBtn: document.getElementById("game-restart-final-btn"),
-        simCommerceBtn: document.getElementById("sim-commerce-btn"),
-
-        // Specs Sandbox View
-        specActiveMode: document.getElementById("spec-active-mode"),
-        specPlayersCount: document.getElementById("spec-players-count"),
-        specSpinsCount: document.getElementById("spec-spins-count"),
-        specDrawsCount: document.getElementById("spec-draws-count"),
-        sandboxPlayNowBtn: document.getElementById("sandbox-play-now-btn")
+        simCommerceBtn: document.getElementById("sim-commerce-btn")
     };
 
-    // ==========================================================================
-    // 4. PRESENTATION DECK LOGIC
-    // ==========================================================================
-    
     function announceToScreenReader(message) {
-        DOM.srAnnouncement.textContent = message;
-    }
-
-    function updatePresentationUI() {
-        const slideIndex = STATE.currentSlide;
-        const slides = document.querySelectorAll(".slide");
-
-        // Toggle active slide class
-        slides.forEach((slide, index) => {
-            if (index === slideIndex) {
-                slide.classList.add("active-slide");
-                slide.setAttribute("aria-hidden", "false");
-            } else {
-                slide.classList.remove("active-slide");
-                slide.setAttribute("aria-hidden", "true");
-            }
-        });
-
-        // Update progress bar
-        const progressPercent = ((slideIndex + 1) / STATE.totalSlides) * 100;
-        DOM.slideProgress.style.width = `${progressPercent}%`;
-        DOM.slideCounter.textContent = `${slideIndex + 1} / ${STATE.totalSlides}`;
-
-        // Accessibility announcement
-        const slideTitle = slides[slideIndex].querySelector("h1, h2")?.textContent || `Slide ${slideIndex + 1}`;
-        announceToScreenReader(`Showing slide ${slideIndex + 1} of ${STATE.totalSlides}: ${slideTitle}`);
-
-        // guided mode view syncing
-        if (STATE.guidedMode) {
-            const targetScene = slides[slideIndex].getAttribute("data-scene");
-            if (targetScene) {
-                switchView(targetScene);
-            }
+        if (DOM.srAnnouncement) {
+            DOM.srAnnouncement.textContent = message;
         }
-    }
-
-    function navigateSlide(direction) {
-        if (direction === "next") {
-            if (STATE.currentSlide < STATE.totalSlides - 1) {
-                STATE.currentSlide++;
-                SOUNDS.click();
-            } else {
-                // Wrap around at the end
-                STATE.currentSlide = 0;
-            }
-        } else if (direction === "prev") {
-            if (STATE.currentSlide > 0) {
-                STATE.currentSlide--;
-                SOUNDS.click();
-            }
-        }
-        updatePresentationUI();
-    }
-
-    // Keybindings listener
-    document.addEventListener("keydown", (e) => {
-        if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
-        
-        if (e.key === "ArrowRight" || e.key === " ") {
-            e.preventDefault();
-            navigateSlide("next");
-        } else if (e.key === "ArrowLeft") {
-            e.preventDefault();
-            navigateSlide("prev");
-        }
-    });
-
-    // Auto play presentations
-    function toggleAutoPlay() {
-        if (STATE.isAutoPlaying) {
-            clearInterval(STATE.autoPlayTimer);
-            STATE.isAutoPlaying = false;
-            DOM.playPresentationBtn.classList.remove("btn-active");
-            DOM.playPresentationBtn.innerHTML = `<i class="fa-solid fa-play"></i> Auto-Play`;
-        } else {
-            initAudio();
-            STATE.isAutoPlaying = true;
-            DOM.playPresentationBtn.classList.add("btn-active");
-            DOM.playPresentationBtn.innerHTML = `<i class="fa-solid fa-pause"></i> Pause`;
-            STATE.autoPlayTimer = setInterval(() => {
-                navigateSlide("next");
-            }, 6000); // 6 seconds auto rotation
-        }
-    }
-
-    // Toggle fullscreen wrapper
-    function toggleFullscreen() {
-        const mainPanel = document.getElementById("main-deck");
-        if (!document.fullscreenElement) {
-            mainPanel.requestFullscreen().catch(err => {
-                console.warn(`Fullscreen activation failed: ${err.message}`);
-            });
-            DOM.toggleFullscreenBtn.innerHTML = `<i class="fa-solid fa-compress"></i> Windowed`;
-        } else {
-            document.exitFullscreen();
-            DOM.toggleFullscreenBtn.innerHTML = `<i class="fa-solid fa-expand"></i> Fullscreen`;
-        }
-    }
-
-    // Toggle sandbox play vs guided slide deck
-    function toggleSandboxMode(forcePlay = null) {
-        const nextState = forcePlay !== null ? forcePlay : !STATE.guidedMode;
-        const mainDeck = document.getElementById("main-deck");
-        const tabSlidesBtn = document.getElementById("tab-slides-btn");
-        const tabSimulatorBtn = document.getElementById("tab-simulator-btn");
-
-        if (nextState) {
-            STATE.guidedMode = false;
-            DOM.guidedBadge.classList.remove("active");
-            DOM.sandboxBadge.classList.add("active");
-            DOM.toggleSandboxBtn.classList.add("btn-active");
-            
-            // Focus layout full screen simulator
-            document.body.classList.add("sandbox-fullscreen");
-            if (mainDeck) {
-                mainDeck.classList.add("show-simulator");
-            }
-            if (tabSimulatorBtn && tabSlidesBtn) {
-                tabSimulatorBtn.classList.add("active");
-                tabSlidesBtn.classList.remove("active");
-            }
-            
-            announceToScreenReader("Sandbox Play Mode Enabled. Simulator is now unlocked and showing fullscreen.");
-        } else {
-            STATE.guidedMode = true;
-            DOM.guidedBadge.classList.add("active");
-            DOM.sandboxBadge.classList.remove("active");
-            DOM.toggleSandboxBtn.classList.remove("btn-active");
-            
-            // Revert layout focus
-            document.body.classList.remove("sandbox-fullscreen");
-            if (mainDeck) {
-                mainDeck.classList.remove("show-simulator");
-            }
-            if (tabSlidesBtn && tabSimulatorBtn) {
-                tabSlidesBtn.classList.add("active");
-                tabSimulatorBtn.classList.remove("active");
-            }
-            
-            announceToScreenReader("Guided Mode Activated. Simulator is synchronized with slide view.");
-            updatePresentationUI();
-        }
-        updateSpecsViewData();
-        
-        // Update persistent header exit play overlay
-        const exitBtn = document.getElementById("exit-sandbox-btn");
-        if (exitBtn) {
-            exitBtn.style.display = nextState ? "flex" : "none";
-        }
-    }
-
-    // Event Bindings for slides
-    DOM.prevBtn.addEventListener("click", () => navigateSlide("prev"));
-    DOM.nextBtn.addEventListener("click", () => navigateSlide("next"));
-    DOM.playPresentationBtn.addEventListener("click", toggleAutoPlay);
-    DOM.toggleFullscreenBtn.addEventListener("click", toggleFullscreen);
-    DOM.toggleSandboxBtn.addEventListener("click", () => toggleSandboxMode());
-    
-    const exitSandboxBtn = document.getElementById("exit-sandbox-btn");
-    if (exitSandboxBtn) {
-        exitSandboxBtn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            initAudio();
-            SOUNDS.pop();
-            toggleSandboxMode(false);
-        });
     }
 
     // ==========================================================================
-    // 5. SMARTPHONE SIMULATOR VIEW CONTROLLER
+    // VIEWPORT NAVIGATION STATE MACHINE
     // ==========================================================================
-    
     function switchView(viewName) {
         DOM.views.forEach(view => {
             if (view.getAttribute("data-view") === viewName) {
@@ -393,32 +191,36 @@ document.addEventListener("DOMContentLoaded", () => {
         // Specific view initialization routines
         if (viewName === "scan") {
             startCameraStream();
+            DOM.scanProgressBar.style.width = "0%";
         } else {
             stopCameraStream();
         }
 
-        if (viewName === "ending") {
-            triggerEndingConfetti();
+        if (viewName === "lobby") {
+            renderPlayersLobbyList();
+        } else if (viewName === "spinner") {
+            buildSpinnerSectors();
+        } else if (viewName === "cards") {
+            preparePromptCardDraw();
+        } else if (viewName === "verdict") {
+            prepareJuryVerdictView();
+        } else if (viewName === "ending") {
+            prepareEndingCelebrationView();
         }
-        
-        updateSpecsViewData();
+
+        announceToScreenReader(`Switched simulator scene to ${viewName}`);
     }
 
-    // WebRTC Camera access controller
+    // WebRTC Camera controller
     function startCameraStream() {
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            // No camera interface support, show fallback animations
             DOM.dummyCamera.style.opacity = "1";
             DOM.webcamStream.style.display = "none";
             return;
         }
 
         const constraints = {
-            video: {
-                width: { ideal: 360 },
-                height: { ideal: 640 },
-                facingMode: "user"
-            },
+            video: { width: { ideal: 360 }, height: { ideal: 640 }, facingMode: "user" },
             audio: false
         };
 
@@ -426,10 +228,10 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(stream => {
                 DOM.webcamStream.srcObject = stream;
                 DOM.webcamStream.style.display = "block";
-                DOM.dummyCamera.style.opacity = "0"; // hide fallback bokeh
+                DOM.dummyCamera.style.opacity = "0";
             })
             .catch(err => {
-                console.warn("Camera streaming error: Access Denied or Missing Device.", err);
+                console.warn("Camera access denied.", err);
                 DOM.dummyCamera.style.opacity = "1";
                 DOM.webcamStream.style.display = "none";
             });
@@ -444,11 +246,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ==========================================================================
-    // 6. PHASE 1: SCAN SIMULATOR INTERACTION
+    // PHASE 1: SCANNINGFEED
     // ==========================================================================
-    
     let scanTimeout = null;
-    
+
     function executeSimulatedScan() {
         initAudio();
         SOUNDS.pop();
@@ -474,31 +275,18 @@ document.addEventListener("DOMContentLoaded", () => {
                     DOM.scanProgressBar.style.width = "0%";
                     DOM.scanHintText.textContent = "Point camera at the Amabile di Rosa bottle";
                     
-                    // Transition to Setup View
-                    if (STATE.guidedMode) {
-                        navigateSlide("next"); // triggers Phase 2 slide and lobby view
-                    } else {
-                        switchView("lobby");
-                    }
+                    switchView("lobby");
                 }, 1000);
             }
         }, 150);
     }
 
-    DOM.startScanningBtn.addEventListener("click", () => {
-        if (STATE.guidedMode) {
-            navigateSlide("next");
-        } else {
-            switchView("scan");
-        }
-    });
-
+    DOM.startScanningBtn.addEventListener("click", () => switchView("scan"));
     DOM.mockScanSuccessBtn.addEventListener("click", executeSimulatedScan);
 
     // ==========================================================================
-    // 7. PHASE 2: PLAYER LOBBY REGISTRATION
+    // PHASE 2: PLAYER LOBBY
     // ==========================================================================
-    
     function renderPlayersLobbyList() {
         DOM.lobbyPlayersList.innerHTML = "";
         
@@ -521,7 +309,6 @@ document.addEventListener("DOMContentLoaded", () => {
             DOM.lobbyPlayersList.appendChild(playerRow);
         });
 
-        // Manage Lobby start action state
         const playerCount = STATE.players.length;
         if (playerCount >= 2) {
             DOM.lobbyStartGameBtn.removeAttribute("disabled");
@@ -533,15 +320,11 @@ document.addEventListener("DOMContentLoaded", () => {
             DOM.lobbyStartGameBtn.innerHTML = `<span>START THE GAME (${playerCount}/2 Required)</span> <i class="fa-solid fa-play"></i>`;
         }
 
-        // Keep dynamic mini bars synchronized in other panels
         updateActivePlayersSpinnerBar();
     }
 
     function addPlayer(name) {
-        if (STATE.players.length >= 4) {
-            announceToScreenReader("Lobby full. Max 4 players allowed.");
-            return;
-        }
+        if (STATE.players.length >= 4) return;
         if (!name.trim()) return;
 
         const pIdx = STATE.players.length;
@@ -559,19 +342,16 @@ document.addEventListener("DOMContentLoaded", () => {
         STATE.players.push(newPlayer);
         SOUNDS.pop();
         renderPlayersLobbyList();
-        updateSpecsViewData();
     }
 
     function removePlayer(index) {
         STATE.players.splice(index, 1);
-        // Re-assign colors to keep design harmonious
         STATE.players.forEach((player, idx) => {
             player.color = PLAYER_COLORS[idx].main;
             player.textCol = PLAYER_COLORS[idx].text;
         });
         SOUNDS.click();
         renderPlayersLobbyList();
-        updateSpecsViewData();
     }
 
     DOM.playerOnboardForm.addEventListener("submit", (e) => {
@@ -594,15 +374,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     DOM.lobbyStartGameBtn.addEventListener("click", () => {
         if (STATE.players.length >= 2) {
-            if (STATE.guidedMode) {
-                navigateSlide("next"); // triggers Spinner phase slide
-            } else {
-                switchView("spinner");
-            }
+            switchView("spinner");
         }
     });
 
-    // Auto-filler helper: Prevents blocking clients, guarantees interactivity
     function guaranteeTestPlayers() {
         if (STATE.players.length < 2) {
             STATE.players = [];
@@ -613,11 +388,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ==========================================================================
-    // 8. PHASE 3: INTERACTIVE BOTTLE SPINNER PHYSICS
+    // PHASE 3: INTERACTIVE BOTTLE SPINNER PHYSICS
     // ==========================================================================
-    
     let currentRotation = 0;
-    
+
     function updateActivePlayersSpinnerBar() {
         DOM.spinnerPlayersBar.innerHTML = "";
         STATE.players.forEach((player, idx) => {
@@ -635,17 +409,14 @@ document.addEventListener("DOMContentLoaded", () => {
         guaranteeTestPlayers();
         const count = STATE.players.length;
         DOM.wheelSectorsContainer.innerHTML = "";
-        
         const degPerSlice = 360 / count;
         
         STATE.players.forEach((player, idx) => {
-            // Setup wedges inside absolute circular frame using clip paths or linear lines
             const wedge = document.createElement("div");
             wedge.className = "sector-wedge";
             wedge.style.backgroundColor = player.color;
             wedge.style.opacity = "0.08";
             
-            // Standard sector rotation positioning
             const rot = idx * degPerSlice;
             const skew = 90 - degPerSlice;
             wedge.style.transform = `rotate(${rot}deg) skewY(${skew}deg)`;
@@ -665,28 +436,20 @@ document.addEventListener("DOMContentLoaded", () => {
         DOM.triggerSpinBtn.setAttribute("disabled", "true");
         DOM.spinnerStatusTitle.textContent = "SPINNING...";
         
-        // Remove highlit classes
         document.querySelectorAll(".mini-avatar-bubble").forEach(b => b.classList.remove("active-spinner-target"));
 
-        // Spin physics initialization variables
-        let angularVelocity = Math.random() * 40 + 40; // 40 - 80 speed range
-        const friction = 0.978; // natural deceleration decay
+        let angularVelocity = Math.random() * 40 + 40;
+        const friction = 0.978;
         let totalWedgesCrossed = 0;
         const degPerPlayer = 360 / STATE.players.length;
 
         function animateSpin() {
             if (angularVelocity < 0.05) {
-                // Stopped spinning
                 STATE.isSpinning = false;
                 DOM.triggerSpinBtn.removeAttribute("disabled");
                 DOM.spinnerStatusTitle.textContent = "TAP BOTTLE TO SPIN";
                 
-                // Determine targeted segment player
-                // normalize rotation within 360 deg
                 const finalRotationDegrees = (currentRotation % 360 + 360) % 360;
-                
-                // Camera vector is pointing straight up (0 deg or 360 deg relative to phone top)
-                // Since bottle rotates clockwise, the nozzle points to (360 - angle) mapping target
                 const pointingAngle = (360 - finalRotationDegrees) % 360;
                 const winnerIndex = Math.floor(pointingAngle / degPerPlayer) % STATE.players.length;
                 
@@ -698,13 +461,11 @@ document.addEventListener("DOMContentLoaded", () => {
             DOM.physicsBottle.style.transform = `rotate(${currentRotation}deg)`;
             angularVelocity *= friction;
 
-            // Audio click tick trigger on sector bounds intersection
             const crossedCount = Math.floor(currentRotation / degPerPlayer);
             if (crossedCount > totalWedgesCrossed) {
                 totalWedgesCrossed = crossedCount;
                 SOUNDS.click();
                 
-                // Subtle dynamic mini-hightlight
                 const currentSector = (STATE.players.length - 1) - (totalWedgesCrossed % STATE.players.length);
                 const bubble = document.getElementById(`mini-av-${currentSector}`);
                 if (bubble) {
@@ -726,24 +487,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         SOUNDS.win();
 
-        // Highlight selected profile
         document.querySelectorAll(".mini-avatar-bubble").forEach(b => b.classList.remove("active-spinner-target"));
         const bubble = document.getElementById(`mini-av-${winnerIndex}`);
         if (bubble) bubble.classList.add("active-spinner-target");
 
-        // Footer status display
         DOM.selectedTargetPlayer.textContent = player.name;
         DOM.turnActiveAvatar.textContent = player.avatar;
         DOM.turnActiveAvatar.style.backgroundColor = player.color;
         DOM.turnActiveAvatar.style.color = player.textCol;
 
-        // Auto move after dynamic timer in guided mode
         setTimeout(() => {
-            if (STATE.guidedMode) {
-                navigateSlide("next"); // shifts deck to prompts categorization slide
-            } else {
-                switchView("cards");
-            }
+            switchView("cards");
         }, 1800);
     }
 
@@ -751,9 +505,8 @@ document.addEventListener("DOMContentLoaded", () => {
     DOM.physicsBottle.addEventListener("click", executeBottleSpin);
 
     // ==========================================================================
-    // 9. PHASE 4: PROMPTS DRAWING (3D CARD FLIP)
+    // PHASE 4: PROMPTS CARD DRAW
     // ==========================================================================
-    
     function preparePromptCardDraw() {
         guaranteeTestPlayers();
         if (STATE.activePlayerIndex === null) {
@@ -762,13 +515,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const activePlayer = STATE.players[STATE.activePlayerIndex];
 
-        // Draw profile card header
         DOM.cardActiveName.textContent = activePlayer.name;
         DOM.cardActiveAvatar.textContent = activePlayer.avatar;
         DOM.cardActiveAvatar.style.backgroundColor = activePlayer.color;
         DOM.cardActiveAvatar.style.color = activePlayer.textCol;
 
-        // Reset flip state card face
         DOM.promptCardWrapper.classList.remove("is-flipped");
         STATE.isFlipped = false;
         
@@ -788,10 +539,8 @@ document.addEventListener("DOMContentLoaded", () => {
         STATE.activeCategory = category;
         STATE.drawnCard = randomPrompt;
 
-        // Update front side DOM content
         DOM.drawnPromptContent.textContent = randomPrompt;
         
-        // Render category color strip badges
         let catColor = "var(--brand-red)";
         let catIcon = "fa-glass-cheers";
         if (category === "DARE") {
@@ -806,18 +555,12 @@ document.addEventListener("DOMContentLoaded", () => {
         DOM.cardStripIcon.className = `fa-solid ${catIcon}`;
         DOM.cardStripLabel.textContent = category;
 
-        // 3D Flip Execution Trigger
         SOUNDS.swish();
         DOM.promptCardWrapper.classList.add("is-flipped");
         STATE.isFlipped = true;
 
-        // Auto routing advancement in guided presentation mode
         setTimeout(() => {
-            if (STATE.guidedMode) {
-                navigateSlide("next"); // opens jury feedback slide view
-            } else {
-                switchView("verdict");
-            }
+            switchView("verdict");
         }, 3000);
     }
 
@@ -828,9 +571,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Tap card wrapper to return/draw alternate
     DOM.promptCardWrapper.addEventListener("click", () => {
-        if (STATE.isFlipped && !STATE.guidedMode) {
+        if (STATE.isFlipped) {
             DOM.promptCardWrapper.classList.remove("is-flipped");
             STATE.isFlipped = false;
             SOUNDS.swish();
@@ -838,9 +580,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ==========================================================================
-    // 10. PHASE 5: THE PEER JURY VERDICT
+    // PHASE 5: THE PEER JURY VERDICT
     // ==========================================================================
-    
     function prepareJuryVerdictView() {
         guaranteeTestPlayers();
         if (STATE.activePlayerIndex === null) {
@@ -848,7 +589,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const activePlayer = STATE.players[STATE.activePlayerIndex];
-        const promptDrawn = STATE.drawnCard || "Tell the group your funniest secret or take a sip of Amabile di Rosa sweet wine.";
+        const promptDrawn = STATE.drawnCard || "Tell the group your funniest secret or take a sip of Amabile di Rosa.";
 
         DOM.verdictPlayerName.textContent = activePlayer.name;
         DOM.verdictPlayerAvatar.textContent = activePlayer.avatar;
@@ -856,7 +597,6 @@ document.addEventListener("DOMContentLoaded", () => {
         DOM.verdictPlayerAvatar.style.color = activePlayer.textCol;
         DOM.verdictActivePromptDisplay.textContent = promptDrawn;
 
-        // Reset percentages indicator
         STATE.votesLegit = 0;
         STATE.votesTotal = 0;
         updateJuryVerdictsBarDisplay();
@@ -865,7 +605,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function updateJuryVerdictsBarDisplay() {
         if (STATE.votesTotal === 0) {
             DOM.juryPercentage.textContent = "Jury has not voted";
-            DOM.juryBarLegit.style.width = "50%"; // Balanced
+            DOM.juryBarLegit.style.width = "50%";
             return;
         }
 
@@ -884,29 +624,18 @@ document.addEventListener("DOMContentLoaded", () => {
             SOUNDS.cap();
         }
 
-        // Add to global player metrics
         const player = STATE.players[STATE.activePlayerIndex];
-        if (isLegit) {
-            player.legitVotes++;
-        }
+        if (isLegit) player.legitVotes++;
         player.totalVotes++;
 
         updateJuryVerdictsBarDisplay();
 
-        // Check if full jury panel has finalized (e.g. 2 votes total)
         if (STATE.votesTotal >= 2) {
-            // Play success sounds
             setTimeout(() => {
-                // If this is the ending of round sequences or a complete deck explore
-                if (STATE.guidedMode) {
-                    navigateSlide("next"); // shows global outcomes final slide
+                if (STATE.spinsCount >= 3) {
+                    switchView("ending");
                 } else {
-                    // Check if we want to loop back to spinner or show close ending
-                    if (STATE.spinsCount >= 3) {
-                        switchView("ending");
-                    } else {
-                        switchView("spinner");
-                    }
+                    switchView("spinner");
                 }
             }, 1500);
         }
@@ -916,15 +645,13 @@ document.addEventListener("DOMContentLoaded", () => {
     DOM.juryCapBtn.addEventListener("click", () => recordJuryVote(false));
 
     // ==========================================================================
-    // 11. PHASE 6: STAKES & OUTCOME CELEBRATIONS
+    // PHASE 6: OUTCOME CELEBRATIONS
     // ==========================================================================
-    
     let confettiAnimationFrame = null;
 
     function prepareEndingCelebrationView() {
         guaranteeTestPlayers();
 
-        // Calculate ratios
         let highestScore = -1;
         let lowestScore = 999;
         let winner = STATE.players[0];
@@ -942,14 +669,12 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        // Set Winner DOM details
         DOM.winnerNameText.textContent = winner.name;
         DOM.winnerAvatar.textContent = winner.avatar;
         DOM.winnerAvatar.style.backgroundColor = winner.color;
         DOM.winnerAvatar.style.color = winner.textCol;
         DOM.winnerScoreText.textContent = `${Math.round(highestScore)}% Legit`;
 
-        // Set Loser DOM details
         DOM.loserNameText.textContent = loser.name;
         DOM.loserAvatar.textContent = loser.avatar;
         DOM.loserAvatar.style.backgroundColor = loser.color;
@@ -960,12 +685,10 @@ document.addEventListener("DOMContentLoaded", () => {
         triggerEndingConfetti();
     }
 
-    // HTML5 Canvas Confetti Simulation System
     function triggerEndingConfetti() {
         const canvas = DOM.confettiCanvas;
         const ctx = canvas.getContext("2d");
         
-        // Scale canvas viewport sizes
         canvas.width = canvas.parentElement.clientWidth;
         canvas.height = canvas.parentElement.clientHeight;
 
@@ -991,7 +714,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         function drawConfetti() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
             let activeParticles = 0;
 
             particles.forEach((p, idx) => {
@@ -1011,7 +733,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
                 ctx.stroke();
 
-                // Recycle particles
                 if (p.y > canvas.height + 10) {
                     p.y = -20;
                     p.x = Math.random() * canvas.width;
@@ -1034,13 +755,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         renderPlayersLobbyList();
         SOUNDS.pop();
-        
-        if (STATE.guidedMode) {
-            STATE.currentSlide = 0;
-            updatePresentationUI();
-        } else {
-            switchView("intro");
-        }
+        switchView("intro");
     });
 
     DOM.simCommerceBtn.addEventListener("click", () => {
@@ -1048,93 +763,12 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("Loser redirected to purchase checklist. Branded bottle of Amabile di Rosa added to basket!");
     });
 
-    // ==========================================================================
-    // 12. ROUTER STATE VIEW COORDINATOR (GUIDED/SANDBOX DETECTOR)
-    // ==========================================================================
-    
-    function updateSpecsViewData() {
-        DOM.specActiveMode.textContent = STATE.guidedMode ? "Guided Slide Mode" : "Sandbox Sandbox Mode";
-        DOM.specPlayersCount.textContent = `${STATE.players.length} Registered`;
-        DOM.specSpinsCount.textContent = `${STATE.spinsCount} Spins`;
-        DOM.specDrawsCount.textContent = `${STATE.drawsCount} Draws`;
-    }
-
-    // Handles state conversions when views switch
-    function handleSceneTransitionInit(viewName) {
-        if (viewName === "scan") {
-            DOM.scanProgressBar.style.width = "0%";
-        } else if (viewName === "lobby") {
-            renderPlayersLobbyList();
-        } else if (viewName === "spinner") {
-            buildSpinnerSectors();
-        } else if (viewName === "cards") {
-            preparePromptCardDraw();
-        } else if (viewName === "verdict") {
-            prepareJuryVerdictView();
-        } else if (viewName === "ending") {
-            prepareEndingCelebrationView();
-        }
-    }
-
-    // Intercept View Swappings in system
-    const originalSwitchView = switchView;
-    switchView = function(viewName) {
-        handleSceneTransitionInit(viewName);
-        originalSwitchView(viewName);
-    };
-
-    DOM.sandboxPlayNowBtn.addEventListener("click", () => {
-        toggleSandboxMode(true);
-        switchView("lobby");
-    });
-
     DOM.resetBtn.addEventListener("click", () => {
         initAudio();
         SOUNDS.pop();
-        if (STATE.guidedMode) {
-            STATE.currentSlide = 0;
-            updatePresentationUI();
-        } else {
-            switchView("intro");
-        }
+        switchView("intro");
     });
 
-    // Initialize layout defaults
-    updatePresentationUI();
-
-    // ==========================================================================
-    // 13. MOBILE TAB SWITCHER CONTROLLER
-    // ==========================================================================
-    const tabSlidesBtn = document.getElementById("tab-slides-btn");
-    const tabSimulatorBtn = document.getElementById("tab-simulator-btn");
-    const mainDeck = document.getElementById("main-deck");
-
-    if (tabSlidesBtn && tabSimulatorBtn && mainDeck) {
-        tabSlidesBtn.addEventListener("click", () => {
-            initAudio();
-            SOUNDS.click();
-            mainDeck.classList.remove("show-simulator");
-            tabSlidesBtn.classList.add("active");
-            tabSimulatorBtn.classList.remove("active");
-            announceToScreenReader("Switched to Slides View");
-        });
-
-        tabSimulatorBtn.addEventListener("click", () => {
-            initAudio();
-            SOUNDS.click();
-            mainDeck.classList.add("show-simulator");
-            tabSimulatorBtn.classList.add("active");
-            tabSlidesBtn.classList.remove("active");
-            announceToScreenReader("Switched to Live AR Simulator");
-            
-            // Trigger a resize event to ensure Canvas and Web RTC elements adjust immediately
-            window.dispatchEvent(new Event('resize'));
-            
-            // Re-render confetti if active views is ending
-            const activeView = document.querySelector(".sim-view.active-view");
-            if (activeView && activeView.getAttribute("data-view") === "ending") {
-                triggerEndingConfetti();
-            }
-        });
-    }
+    // Boot simulator in introwelcome view
+    switchView("intro");
 });
