@@ -1059,4 +1059,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Initialize layout defaults
     updatePresentationUI();
+
+    // ==========================================================================
+    // 13. MOBILE TAB SWITCHER CONTROLLER
+    // ==========================================================================
+    const tabSlidesBtn = document.getElementById("tab-slides-btn");
+    const tabSimulatorBtn = document.getElementById("tab-simulator-btn");
+    const mainDeck = document.getElementById("main-deck");
+
+    if (tabSlidesBtn && tabSimulatorBtn && mainDeck) {
+        tabSlidesBtn.addEventListener("click", () => {
+            initAudio();
+            SOUNDS.click();
+            mainDeck.classList.remove("show-simulator");
+            tabSlidesBtn.classList.add("active");
+            tabSimulatorBtn.classList.remove("active");
+            announceToScreenReader("Switched to Slides View");
+        });
+
+        tabSimulatorBtn.addEventListener("click", () => {
+            initAudio();
+            SOUNDS.click();
+            mainDeck.classList.add("show-simulator");
+            tabSimulatorBtn.classList.add("active");
+            tabSlidesBtn.classList.remove("active");
+            announceToScreenReader("Switched to Live AR Simulator");
+            
+            // Trigger a resize event to ensure Canvas and Web RTC elements adjust immediately
+            window.dispatchEvent(new Event('resize'));
+            
+            // Re-render confetti if active views is ending
+            const activeView = document.querySelector(".sim-view.active-view");
+            if (activeView && activeView.getAttribute("data-view") === "ending") {
+                triggerEndingConfetti();
+            }
+        });
+    }
 });

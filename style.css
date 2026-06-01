@@ -2343,52 +2343,235 @@ body {
 }
 
 /* Responsive Scaling for Presentation layout */
-@media (max-width: 1024px) {
-    .deck-grid {
-        grid-template-columns: 1fr;
-        height: auto;
-        overflow-y: auto;
-    }
-    
-    .presentation-panel {
-        height: auto;
-        border-right: none;
-    }
-    
-    .slides-container {
-        height: 600px;
-    }
-    
-    .simulator-panel {
-        padding: 40px 0;
-        height: 820px;
-    }
+/* ==========================================================================
+   8. MOBILE RESPONSIVE ADAPTATIONS
+   ========================================================================== */
+
+/* Mobile Tab Switcher (Hidden on Desktop) */
+.mobile-tab-bar {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background-color: rgba(30, 30, 30, 0.98);
+    backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 10px;
 }
 
-@media (max-width: 640px) {
-    .slide {
-        padding: 45px 24px;
+.mobile-tab-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 12px;
+    transition: var(--transition-fast);
+    flex-grow: 1;
+    max-width: 160px;
+}
+
+.mobile-tab-btn i {
+    font-size: 20px;
+}
+
+.mobile-tab-btn:hover {
+    color: var(--brand-red);
+}
+
+.mobile-tab-btn.active {
+    color: var(--brand-red);
+    background-color: rgba(232, 88, 53, 0.08);
+}
+
+/* Tablet & Mobile Screens */
+@media (max-width: 768px) {
+    body {
+        overflow: auto;
     }
-    
+
+    .deck-grid {
+        grid-template-columns: 1fr;
+        height: calc(100vh - 70px);
+        width: 100vw;
+        overflow: hidden;
+    }
+
+    .presentation-panel {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        border-right: none;
+    }
+
+    .simulator-panel {
+        display: none; /* Hidden by default in favor of slide tab */
+        width: 100%;
+        height: 100%;
+        padding: 10px;
+        overflow: hidden;
+    }
+
+    /* Tab Switch Visibility classes */
+    .deck-grid.show-simulator .presentation-panel {
+        display: none !important;
+    }
+
+    .deck-grid.show-simulator .simulator-panel {
+        display: flex !important;
+    }
+
+    /* Slides Adaptation on Mobile */
+    .slide {
+        padding: 40px 30px;
+        justify-content: flex-start;
+        overflow-y: auto;
+    }
+
     .slide-main-title {
         font-size: 38px;
     }
-    
+
     .slide-title {
         font-size: 26px;
+        margin-bottom: 20px;
+        padding-left: 14px;
+        border-left-width: 4px;
     }
-    
+
+    .subtitle {
+        font-size: 16px;
+        letter-spacing: 4px;
+    }
+
+    .accent-line {
+        margin: 20px 0;
+    }
+
+    .slide-desc {
+        font-size: 16px;
+    }
+
     .slide-body.two-column {
         grid-template-columns: 1fr;
+        gap: 30px;
     }
-    
+
     .tiled-content {
         grid-template-columns: 1fr;
+        gap: 16px;
     }
-    
-    .deck-footer {
-        flex-direction: column;
-        gap: 20px;
+
+    .tile {
         padding: 20px;
+    }
+
+    .tech-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .deck-header {
+        padding: 16px 20px;
+    }
+
+    .deck-footer {
+        padding: 16px 20px;
+        flex-direction: column;
+        gap: 16px;
+        border-top: 1px solid var(--border-color);
+        background: #FFFFFF;
+    }
+
+    .progress-bar-container {
+        width: 100%;
+    }
+
+    .extra-controls {
+        width: 100%;
+        justify-content: space-around;
+    }
+
+    .control-action-btn {
+        padding: 8px 12px;
+        font-size: 11px;
+    }
+
+    /* Smartphone scaling to fit smaller screens perfectly */
+    .phone-frame {
+        transform: scale(0.8);
+        transform-origin: center center;
+        margin: auto;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+}
+
+/* Smartphone responsive scales based on heights */
+@media (max-width: 768px) and (max-height: 740px) {
+    .phone-frame {
+        transform: scale(0.72);
+    }
+}
+
+@media (max-width: 768px) and (max-height: 640px) {
+    .phone-frame {
+        transform: scale(0.62);
+    }
+}
+
+@media (max-width: 768px) and (max-height: 560px) {
+    .phone-frame {
+        transform: scale(0.52);
+    }
+}
+
+/* Extra small layout styles */
+@media (max-width: 480px) {
+    .slide {
+        padding: 30px 20px;
+    }
+
+    .slide-main-title {
+        font-size: 32px;
+    }
+
+    .slide-title {
+        font-size: 22px;
+    }
+
+    .bullet-list li {
+        gap: 12px;
+    }
+
+    .bullet-list i {
+        padding: 8px;
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+    }
+
+    .bullet-list li strong {
+        font-size: 15px;
+    }
+
+    .bullet-list li span {
+        font-size: 13px;
+    }
+
+    .phone-frame {
+        transform: scale(0.78); /* Scale back slightly if width permits */
     }
 }
